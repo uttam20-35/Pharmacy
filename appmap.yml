@@ -1,0 +1,4 @@
+name: "pharmacy"
+appmap_dir: "target/appmap"
+packages:
+- path: "com.crossasyst.pharmacy"

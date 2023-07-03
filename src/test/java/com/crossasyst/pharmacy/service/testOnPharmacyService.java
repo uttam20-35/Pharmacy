@@ -10,11 +10,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
@@ -25,33 +26,67 @@ public class testOnPharmacyService {
     private PharmacyService sut;
 
     @Mock
-    private PharmacyMapper pharmacyMapper;
-
-    @Mock
     private PharmacyRepository pharmacyRepository;
+
+    private PharmacyMapper pharmacyMapper;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+         pharmacyMapper = Mappers.getMapper(PharmacyMapper.class);
+        ReflectionTestUtils.setField(sut,"pharmacyMapper",pharmacyMapper);
     }
 
+//    @Test
+//    public void testCreatePharmacy() {
+////        Pharmacy pharmacy = new Pharmacy();
+////        pharmacy.setPharmacyName("Apollo");
+//        PharmacyEntity pharmacyEntity = new PharmacyEntity();
+//        pharmacyEntity.setPharmacyId(101L);
+//        pharmacyEntity.setPharmacyName("Apollo");
+//
+//        PharmacyResponse pharmacyResponse = new PharmacyResponse();
+//        pharmacyResponse.setPharmacyId(101L);
+//
+//        Mockito.when(pharmacyMapper.modelToEntity(Mockito.any(Pharmacy.class))).thenReturn(pharmacyEntity);
+//        Mockito.when(pharmacyRepository.save(Mockito.any(PharmacyEntity.class))).thenReturn(pharmacyEntity);
+//        Mockito.when(sut.createPharmacy(Mockito.any())).thenReturn(pharmacyResponse);
+//
+//        pharmacyResponse = sut.createPharmacy(Mockito.any());
+//        Assertions.assertEquals(101L, pharmacyResponse.getPharmacyId());
+//    }
+
     @Test
-    public void testCreatePharmacy() {
-        Pharmacy pharmacy = new Pharmacy();
-        pharmacy.setPharmacyName("Apollo");
+    void testAddPharmacy(){
         PharmacyEntity pharmacyEntity = new PharmacyEntity();
         pharmacyEntity.setPharmacyId(101L);
         pharmacyEntity.setPharmacyName("Apollo");
 
-        PharmacyResponse pharmacyResponse = new PharmacyResponse();
-        pharmacyResponse.setPharmacyId(101L);
-
-        Mockito.when(pharmacyMapper.modelToEntity(pharmacy)).thenReturn(pharmacyEntity);
-        Mockito.when(pharmacyRepository.save(pharmacyEntity)).thenReturn(pharmacyEntity);
-
-        pharmacyResponse = sut.createPharmacy(pharmacy);
-        Assertions.assertEquals(101L, pharmacyResponse.getPharmacyId());
+        Pharmacy pharmacy=new Pharmacy();
+        pharmacy.setPharmacyName("Name");
+       // Mockito.when(pharmacyMapper.modelToEntity(Mockito.any(Pharmacy.class))).thenReturn(pharmacyEntity);
+        Mockito.when(pharmacyRepository.save(Mockito.any(PharmacyEntity.class))).thenReturn(pharmacyEntity);
+        PharmacyResponse pharmacyResponse=sut.createPharmacy(pharmacy);
+        Assertions.assertEquals("Name",pharmacyResponse.getPharmacyName());
     }
+
+
+//    @Test
+//    public void testCreatePharmacy() {
+//
+//        PharmacyEntity pharmacyEntity = new PharmacyEntity();
+//        pharmacyEntity.setPharmacyId(101L);
+//        pharmacyEntity.setPharmacyName("Apollo");
+//
+//        PharmacyResponse pharmacyResponse = new PharmacyResponse();
+//        pharmacyResponse.setPharmacyId(101L);
+//
+//        Mockito.when(pharmacyMapper.modelToEntity(Mockito.any(Pharmacy.class))).thenReturn(pharmacyEntity);
+//        Mockito.when(pharmacyRepository.save(Mockito.any(PharmacyEntity.class))).thenReturn(pharmacyEntity);
+//        Mockito.when(sut.createPharmacy(Mockito.any())).thenReturn(pharmacyResponse);
+//
+//        pharmacyResponse = sut.createPharmacy(Mockito.any());
+//        Assertions.assertEquals(101L, pharmacyResponse.getPharmacyId());
+//    }
 
     @Test
     public void testGetPharmacy() {

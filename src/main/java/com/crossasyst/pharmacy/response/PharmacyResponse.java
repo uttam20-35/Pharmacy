@@ -12,4 +12,6 @@ import lombok.Setter;
 public class PharmacyResponse {
 
     private Long pharmacyId;
+
+    private String pharmacyName;
 }

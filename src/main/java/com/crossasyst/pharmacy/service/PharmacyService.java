@@ -14,11 +14,17 @@ import java.util.Optional;
 @Service
 public class PharmacyService {
 
-    @Autowired
-    private PharmacyRepository pharmacyRepository;
+
+    private final PharmacyRepository pharmacyRepository;
+
+
+    private final PharmacyMapper pharmacyMapper;
 
     @Autowired
-    private PharmacyMapper pharmacyMapper;
+    public PharmacyService(PharmacyRepository pharmacyRepository, PharmacyMapper pharmacyMapper) {
+        this.pharmacyRepository = pharmacyRepository;
+        this.pharmacyMapper = pharmacyMapper;
+    }
 
     public PharmacyResponse createPharmacy(Pharmacy pharmacy) {
         PharmacyEntity pharmacyEntity = pharmacyMapper.modelToEntity(pharmacy);
@@ -26,6 +32,7 @@ public class PharmacyService {
 
         PharmacyResponse pharmacyResponse = new PharmacyResponse();
         pharmacyResponse.setPharmacyId(pharmacyEntity.getPharmacyId());
+        pharmacyResponse.setPharmacyName(pharmacyEntity.getPharmacyName());
         return pharmacyResponse;
     }
 
